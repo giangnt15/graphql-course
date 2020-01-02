@@ -1,0 +1,57 @@
+GraphQL Scalar types:
+    Int: A signed 32‐bit integer.
+    Float: A signed double-precision floating-point value.
+    String: A UTF‐8 character sequence.
+    Boolean: true or false.
+    ID: The ID scalar type represents a unique identifier, 
+        often used to refetch an object or as the key for a cache. 
+        The ID type is serialized in the same way as a String; 
+        however, defining it as an ID signifies that it is not intended to be human‐readable.
+
+Schema: define what data look likes and what to do with data
+resolvers: run when a query, mutation or subscription is called, it knows how to get or mutate the data
+=> resolvers object structure mirrors the structure of Schema
+=> the data returned from a resolver must match up with the fields of the type it returns
+for example: 
+const typeDefs = `
+    type User{
+        id: ID!
+        name: String!
+        email: String!
+        age: Int!
+    }
+
+    type Query{
+        me: User!
+    }
+
+`
+const resolvers = {
+    Query: {
+        me(){
+            return {
+                id: "123",
+                name: "Giang",
+                email: "giangqwerty69@gmail.com"
+            }
+        }
+    }
+}
+
+=> a mutation or a query without arguments list can stripe out "()" (like above)
+=> note that the resolver doesn't return age => if a client try to fetch age => error because age is an required field
+=> either return age from resolver or remove "!" from age
+
+Non-scalar types: Array or custom types (object types): 
+Non-scalar types contain other non-scalar types or scalar types
+
+type MyType{
+    myField: String! # the "!" show that this is an required field, it always is (return) a string, not null
+    myField2: [String!]! #the outer "!" shows that this is an required field, always is an array, not null
+                        # the inner "!" shows that this is an array of type String, it can be empty but
+                        # if it has value, the value must be a String, not null, not any other types
+}
+=> the value return from resolver of the field decorated with "!" must not be null
+
+every resolver is injected with for arguments: parent, args, ctx, info
+ - args is where the arguments from the client lives (it contains all the arguments sent from the client)
