@@ -10,6 +10,7 @@ const typeDefs = `
         id: ID!
         name: String!
         email: String!
+        grades: [Float!]!
         age: Int!
     }
 
@@ -22,7 +23,7 @@ const typeDefs = `
 
     type Query{
         me: User!
-        add(a: Float!, b: Float!): Float!
+        add(numbers: [Float!]!): Float!
         post: Post!
         getPostById(id: ID!): Post!
         posts: [Post!]!
@@ -44,8 +45,18 @@ let posts = [{
 
 const resolvers = {
     User: {
-        name(parent/*parent here is the User returned from a query, a mutation or a subscription*/){
+        name(parent,args/*parent here is the User returned from a query, a mutation or a subscription*/){
+            console.log("parent",parent)
+            console.log("args",args)
+
             return "Nguyen Giang" //override name field of all query or mutation or subscription returning User
+        }
+    },
+    Post: {
+        body(parent,args){
+            console.log("parent",parent)
+            console.log("args",args)
+            return "This is a body"
         }
     },
     Query: {
@@ -53,7 +64,8 @@ const resolvers = {
             return {
                 id: "123",
                 name: "Giang",
-                email: "giangqwerty69@gmail.com"
+                email: "giangqwerty69@gmail.com",
+                grades: [10,20,30,40]
             }
         },
         post(){
@@ -64,11 +76,11 @@ const resolvers = {
                 published: false
             }
         },
-        add(parent,args,ctx,info){
-            console.log('parent',parent);
-            if (args.a!=null&&args.b!=null){
-                return args.a+args.b;
-            }else {
+        add(parent,{numbers},ctx,info){
+            if (numbers.length>0){
+                return numbers.reduce((cur,n)=> cur+n);
+            }
+            else {
                 throw new Error("Please supply both numbers");
             }
         },
@@ -83,7 +95,7 @@ const resolvers = {
 }
 const server = new GraphQLServer({
      typeDefs,
-     resolvers
+     resolvers,
 })
 
 server.start({},()=>console.log("Running on port 4000"))
