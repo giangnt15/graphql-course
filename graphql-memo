@@ -55,3 +55,28 @@ type MyType{
 
 every resolver is injected with for arguments: parent, args, ctx, info
  - args is where the arguments from the client lives (it contains all the arguments sent from the client)
+
+type Query{
+        me: User!
+        users(query: String): [User!]! #query is optional, if query is not passed, remove the "()" from the client query
+        add(a: Float!, b: Float!): Float!
+        post: Post!
+        getPostById(id: ID!): Post!
+        posts: [Post!]!
+}
+e.g : {                 
+  users{
+    id
+    name
+    email
+    age
+  }
+}
+{
+  users(query:"a"){
+    id
+    name
+    email
+    age
+  }
+}
