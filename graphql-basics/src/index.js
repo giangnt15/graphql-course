@@ -44,7 +44,7 @@ let posts = [{
 
 const resolvers = {
     User: {
-        name(){
+        name(parent/*parent here is the User returned from a query, a mutation or a subscription*/){
             return "Nguyen Giang" //override name field of all query or mutation or subscription returning User
         }
     },
