@@ -78,9 +78,10 @@ e.g : {
     email
     age
   }
-if a query, a mutation or a subscription return an object of a custom type or an array of objects of the custom type, if that custom type have a resolver,  
-that resolver will be called for each object of the array, that resolver is injected with the parent parameter pointing to the object being consider => 
-we can determine what can be return to the client here, for example we can stripe out sensitive infomation such as password, email,...
+If a query, a mutation or a subscription return an object of a custom type or an array of objects of the custom type, if that custom type have a resolver,  
+that resolver will be called for each object of the array, that resolver is injected with the parent parameter pointing to the object being consider (the object is of the custom type returned) => 
+we can determine what can be return to the client here, for example we can stripe out sensitive infomation such as password, email,... or we
+can use it to return the relational data 
 
 - selection set is applied only to an array of object type or to an object type itself
 - selection set example: 
@@ -115,5 +116,4 @@ e.g:
             }]
         },{...}]
     }
->>>>>>> e71c1f276c3dff2da3da8d4442b74783f47ea0e8
 }
