@@ -81,7 +81,8 @@ e.g : {
 If a query, a mutation or a subscription return an object of a custom type or an array of objects of the custom type, if that custom type have a resolver,  
 that resolver will be called for each object of the array, that resolver is injected with the parent parameter pointing to the object being consider (the object is of the custom type returned) => 
 we can determine what can be return to the client here, for example we can stripe out sensitive infomation such as password, email,... or we
-can use it to return the relational data 
+can use it to return the relational data => the value returned from that field resolver will override the corresponding field value of the object => the client will recieve the 
+value returned from the field resolver
 
 - selection set is applied only to an array of object type or to an object type itself
 - selection set example: 

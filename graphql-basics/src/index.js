@@ -48,6 +48,7 @@ const typeDefs = `
         createUser(name: String!, email: String!, age: Int): User!
         createPost(title: String!, body: String!, published: Boolean!, author: ID!): Post!
         createComment(text: String!, author: ID!, post: ID!): Comment!
+        updateUser(id: ID!, name: String, email: String, age: Int): User!
     }
 `
 
@@ -208,6 +209,15 @@ const resolvers = {
             comments.push(comment);
             return comment;
 
+        },
+        updateUser(parent,args,ctx,info){
+            const {id, name,email,age} = args;
+            const user = users.find(user=>user.id===id);
+            if (!user) throw new Error('User not existed');
+            if (name) user.name = name;
+            if (age) user.age = age;
+            if (email) user.email =email;
+            return user;
         }
     },
     Query: {
