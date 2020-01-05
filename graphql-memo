@@ -122,3 +122,56 @@ e.g:
 - input types can only have scalar types
 - if a field is of an enum type, the value returned from that field must be one of the
     constant of the enum type
+
+
+import {Prisma} from 'prisma-binding';
+
+const prisma = new Prisma({
+    typeDefs: 'src/generated/prisma.graphql',// the schema we fetch from prisma, not datamodel.graphql
+    endpoint: 'localhost:4466',
+});
+
+export default prisma;
+
+- prisma-binding come with 4 objects: prisma.query, prisma.mutation, prisma.subsciption and prisma.exists
+query, mutation and subsciption have methods for all queriesm, mutation, subsciption,...
+example: prisma.query.users(), prisma.mutation.updateUser({<arguments> => match up with input type})
+
+{
+    "projects": {
+        "prisma": {
+            "schemaPath": "src/generated/prisma.graphql",
+            "extensions":{
+                "endpoints": {
+                    "default": "http://localhost:4466"
+                }
+            }
+        }
+    }
+}
+
+lenh "get-schema": "graphql get-schema -p prisma" : lay schema tu endpoint dinh nghia trong
+project "prisma" va luu vao file "src/generated/prisma.graphql" (schemaPath)
+
+- info: chua select set ma client gui len
+
+prisma have built-in support for relational data => no need to override it in field resolvers
+
+data flow: Prisma -> nodejs -> client: the data structure returned from Prisma to nodejs must match the
+data structure returned from nodejs to client if we want to directly return the data from Prisma to
+client through node, otherwise we have to transform the data returned from prisma to match up
+with the data structure nodejs return to the client (with mutation or query), with subscription,
+both data structure must match no matter what because in subsciption resolvers, we must explicitly
+return prisma subscription. example: 
+ comment: {
+        async subscribe(parent,{postId},{db,pubSub,prisma},info){
+            return prisma.subscription.comment({where: {
+                node: {
+                    post: {
+                        id: postId
+                    }
+                }
+            }},info)
+        }
+       
+    },
