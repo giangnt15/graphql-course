@@ -180,14 +180,15 @@ return prisma subscription. example:
 
  - trong thu muc duoc init boi prisma co 3 file: 
     + prisma.yml: Chứa thông tin cấu hình service prisma: như là endpoint, datamodel, secret của service và endpoint ở đây phải trỏ đến đường dẫn tới prisma server
-                ví dụ nếu prisma chạy trong container với cổng 4466 và được map ra ngoài cổng 4466 của máy local => endpoint phải là http://localhost:4666 (service và stage tùy chọn)
+                ví dụ nếu prisma server chạy trong container với cổng 4466 và được map ra ngoài cổng 4466 của máy local => endpoint phải là http://localhost:4666 (service và stage tùy chọn,
+                mặc định là default/default)
     + datamodel.graphql: Chứa định nghĩa về các bảng dữ liệu, các trường trong bảng và kiểu dữ liệu của chúng, và cả mối quan hệ giữa các bảng
     + docker-compose.yml: Có nhiệm vụ cấu hình server prisma (port,volumes,...) và chỉ định server prisma đó sẽ kết nối đến database nào
     => khi chạy docker-compose up: là startup container có nhiệm vụ chạy server prisma, còn khi chạy prisma deploy trong thư mục prisma mới là
     deploy 1 service prisma lên server prisma => do đó file docker-compose.yml có thể để ngoài thư mục ứng dụng và các file còn lại trong thư mục prisma
     nên để trong thư mục ứng dụng => có thể deploy nhiều service lên 1 server prisma
     => khi app cũng được build và chạy từ cùng 1 file docker-compose với prisma, các kết nối đến server prisma phải thay phần host name là tên service prisma 
-    được tạo docker-compose (vì localhost trong container chính là địa chỉ mạng của container đó, mà container đó KHÔNG có prisma server chạy ở trong), 
+    được tạo từ docker-compose (vì localhost trong container chính là địa chỉ mạng của container đó, mà container đó KHÔNG có prisma server chạy ở trong), 
     còn khi không chạy app bằng container, sẽ sử dụng port đã map ra ngoài của prisma để kết nối. VD: http://localhost:4466
-    => nghĩa là muốn deploy service prisma thì phải có server prisma (local hoặc cloud, nếu mà local thì phải chạy container prisma server từ file docker-compose.yml cloud thì tự host 
+    => nghĩa là muốn deploy service prisma thì phải có server prisma (local hoặc cloud, nếu mà local thì phải chạy container prisma server từ file docker-compose.yml, cloud thì tự host 
     hoặc dùng dịch vụ của prisma) => có sẵn server prisma thì khỏi cần chạy container prisma mà trong file prisma.yml trỏ thẳng endpoint tới con server prisma đó rồi deploy service như thường
