@@ -175,3 +175,15 @@ return prisma subscription. example:
         }
        
     },
+
+ =>>>>>   DateTime in prisma and string is conversible
+
+ - trong thu muc duoc init boi prisma co 3 file: 
+    + prisma.yml: Chứa thông tin cấu hình service prisma: như là endpoint, datamodel, secret của service
+    + datamodel.graphql: Chứa định nghĩa về các bảng dữ liệu, các trường trong bảng và kiểu dữ liệu của chúng, và cả mối quan hệ giữa các bảng
+    + docker-compose.yml: Có nhiệm vụ cấu hình server prisma (port,volumes,...) và chỉ định server prisma đó sẽ kết nối đến database nào
+    => khi chạy docker-compose up: là startup container có nhiệm vụ chạy server prisma, còn khi chạy prisma deploy trong thư mục prisma mới là
+    deploy 1 service prisma lên server prisma => do đó file docker-compose.yml có thể để ngoài thư mục ứng dụng và các file còn lại trong thư mục prisma
+    nên để trong thư mục ứng dụng => có thể deploy nhiều service lên 1 server prisma
+    => khi app cũng được build và chạy từ cùng 1 file docker-compose với prisma, các kết nối đến server prisma phải thay phần host name là tên service prisma 
+    được tạo docker-compose
