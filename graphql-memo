@@ -189,3 +189,5 @@ return prisma subscription. example:
     => khi app cũng được build và chạy từ cùng 1 file docker-compose với prisma, các kết nối đến server prisma phải thay phần host name là tên service prisma 
     được tạo docker-compose (vì localhost trong container chính là địa chỉ mạng của container đó, mà container đó KHÔNG có prisma server chạy ở trong), 
     còn khi không chạy app bằng container, sẽ sử dụng port đã map ra ngoài của prisma để kết nối. VD: http://localhost:4466
+    => nghĩa là muốn deploy service prisma thì phải có server prisma (local hoặc cloud, nếu mà local thì phải chạy container prisma server từ file docker-compose.yml cloud thì tự host 
+    hoặc dùng dịch vụ của prisma) => có sẵn server prisma thì khỏi cần chạy container prisma mà trong file prisma.yml trỏ thẳng endpoint tới con server prisma đó rồi deploy service như thường
